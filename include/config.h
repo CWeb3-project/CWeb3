@@ -1,9 +1,11 @@
+
+#include <stdbool.h>
 #pragma once
 
 typedef struct {
     const char* host;
     int port;
-    char verbose;
+    bool verbose;
 
     int protocol;
 } CWeb3Config;
