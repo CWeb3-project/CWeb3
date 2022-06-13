@@ -1,6 +1,4 @@
-
-#ifndef __CWEB3_RESPONSE_H_
-#define __CWEB3_RESPONSE_H_
+#pragma once
 
 typedef struct {
     const char* content_type;
@@ -8,4 +6,3 @@ typedef struct {
 
 // TODO: make responses for HTML, JS, ...
 
-#endif /* __CWEB3_RESPONSE_H_ */
