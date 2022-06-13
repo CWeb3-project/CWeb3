@@ -9,7 +9,7 @@ CWeb3Socket newCWeb3Socket(CWeb3Config config){
     CWeb3Socket sock = {0};
     sock.config = config;
 
-    sock.socket = socket(AF_INET, SOCK_STREAM, protocol);
+    sock.socket = socket(AF_INET, SOCK_STREAM, config.protocol);
     if (sock.socket == -1) {
         CWeb3Socket s = {0};
         return s;
