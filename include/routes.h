@@ -4,7 +4,7 @@
 #ifndef __CWEB3_CONFIGURATION_H_
 #define __CWEB3_CONFIGURATION_H_
 
-typedef struct CWeb3Route {
+typedef struct {
     const char* route;
     CWeb3Response (*callback)();
 

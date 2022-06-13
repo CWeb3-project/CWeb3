@@ -2,7 +2,7 @@
 #ifndef __CWEB3_RESPONSE_H_
 #define __CWEB3_RESPONSE_H_
 
-typedef struct CWeb3Response {
+typedef struct {
     const char* content_type;
 } CWeb3Response;
 

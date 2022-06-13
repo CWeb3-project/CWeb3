@@ -1,14 +1,13 @@
 
-
 #ifndef __CWEB3_CONFIGURATION_H_
 #define __CWEB3_CONFIGURATION_H_
+#pragma once
 
-struct CWeb3Config {
+typedef struct {
+    const char* host;
     int port;
-    const char* host = "localhost";
-
-    bool verbose = true;
-};
+    char verbose;
+} CWeb3Config;
 
 #endif /* __CWEB3_CONFIGURATION_H_ */
 
