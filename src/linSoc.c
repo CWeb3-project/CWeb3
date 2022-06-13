@@ -25,7 +25,7 @@ CWeb3Socket newCWeb3Socket(CWeb3Config config){
         return s;
     }
 
-    return sock
+    return sock;
 }
 
 int CWeb3Listen(CWeb3Socket sock, char* buffer, size_t bufferSize) {
@@ -36,9 +36,9 @@ int CWeb3Listen(CWeb3Socket sock, char* buffer, size_t bufferSize) {
 
     struct sockaddr_in client = {0};
     int clientsize = sizeof(client);
-    int clientSock = accept(sock.socket, (struct sockaddr*)&client, &clientsize); 
+    int clientSock = accept(sock.socket, (struct sockaddr*)&client, (socklen_t *)&clientsize);
 }
 
 void CWeb3RecvChunk(CWeb3Socket sock, char* buffer, size_t bufferSize) {
-    
+
 }
