@@ -7,6 +7,7 @@ struct CWeb3Config {
     int port;
     const char* host = "localhost";
 
+    bool verbose = true;
 };
 
 #endif /* __CWEB3_CONFIGURATION_H_ */
