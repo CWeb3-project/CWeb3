@@ -28,13 +28,19 @@ int main() {
     config.verbose = 1;
 
     CWeb3Socket socket = newCWeb3Socket(config);
+    if (!socket.socket) printf("err on serv sock") ;
     while (1)
     {
+        // wait till the client connects
         int client = CWeb3Listen(socket);
+        if (!client) printf("err on clin sock") ;
+
+        // read the client message
         char buf[3000] = {0};
         CWeb3RecvChunk(client, buf, 3000);
-        
+        printf("%s\n", buf);
 
+        // making the response message 
         uint64_t len;
         char* File = readFile("index.html", &len);
          
@@ -44,12 +50,13 @@ int main() {
         strcat(responseBuffer, lenStr);
         strcat(responseBuffer, "\r\n\r\n");
         strcat(responseBuffer, File);
-        printf("%s\n", buf);
-
+        
+        // send response message
         CWeb3Send(client, responseBuffer);
         
-
+        // close client socket
         shutdown(client, SHUT_WR);
     }
+    // close server socket
     shutdown(socket.socket, SHUT_WR);
 }
