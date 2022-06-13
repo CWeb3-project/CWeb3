@@ -12,5 +12,5 @@ add_library(${PROJECT_NAME} SHARED
 )
 
 if(WIN32)
-  target_link_libraries(MyExe wsock32 ws2_32)
+  target_link_libraries(${PROJECT_NAME} wsock32 ws2_32)
 endif()

@@ -13,6 +13,7 @@ CWeb3Socket newCWeb3Socket(CWeb3Config config){
     CWeb3Socket sock = {0};
     sock.config = config;
 
+
     sock.socket = socket(AF_INET, SOCK_STREAM, config.protocol);
     if (sock.socket == -1) {
         CWeb3Socket s = {0};
@@ -32,19 +33,24 @@ CWeb3Socket newCWeb3Socket(CWeb3Config config){
     return sock;
 }
 
-int CWeb3Listen(CWeb3Socket sock, char* buffer, size_t bufferSize) {
+int CWeb3Listen(CWeb3Socket sock) {
     if (listen(sock.socket, 1) == -1) {
         // error handling
         return -1;
-    } else return 0;
+    } 
 
     struct sockaddr_in client = {0};
     int clientsize = sizeof(client);
     int clientSock = accept(sock.socket, (struct sockaddr*)&client, (socklen_t *)&clientsize);
+    return clientSock;
 }
 
-void CWeb3RecvChunk(CWeb3Socket sock, char* buffer, size_t bufferSize) {
-    recv(sock.socket, buffer, bufferSize);
+void CWeb3RecvChunk(int clientSocket, char* buffer, size_t bufferSize) {
+    recv(clientSocket, buffer, bufferSize, 0);
+}
+
+void CWeb3Send(int clientSocket, char* buffer) {
+    send(clientSocket, buffer, strlen(buffer), 0);
 }
 
 #endif /* __linux__*/
