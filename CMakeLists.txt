@@ -10,3 +10,7 @@ file (GLOB HDRFiles ${HDRDir}/*.h)
 add_library(${PROJECT_NAME} SHARED
     ${SRCFiles} ${HDRFiles}
 )
+
+if(WIN32)
+  target_link_libraries(MyExe wsock32 ws2_32)
+endif()
