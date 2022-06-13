@@ -77,4 +77,4 @@ int CWeb3Listen(CWeb3Socket sock, char* buffer, size_t bufferSize) {
 	}
 }
 
-#endif _WIN32   
+#endif /* _WIN32 */   
