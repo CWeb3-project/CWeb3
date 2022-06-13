@@ -50,6 +50,7 @@ int main() {
         strcat(responseBuffer, lenStr);
         strcat(responseBuffer, "\r\n\r\n");
         strcat(responseBuffer, File);
+        free(File);
         
         // send response message
         CWeb3Send(client, responseBuffer);
