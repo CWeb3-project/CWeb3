@@ -2,8 +2,10 @@
 #include <inttypes.h>
 #include <stdio.h>
 #include <string.h>
+
 #include <sys/socket.h>
 #include <arpa/inet.h>
+#include <stddef.h>
 
 CWeb3Socket newCWeb3Socket(CWeb3Config config){
     CWeb3Socket sock = {0};
