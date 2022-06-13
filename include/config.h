@@ -8,5 +8,5 @@ typedef struct {
 
     bool verbose;
 
-    int protocol;
+    enum {TCP, UDP} protocol;
 } CWeb3Config;

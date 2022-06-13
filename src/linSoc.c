@@ -1,3 +1,5 @@
+#ifdef __linux__
+
 #include "../include/soc.h"
 #include <inttypes.h>
 #include <stdio.h>
@@ -42,5 +44,7 @@ int CWeb3Listen(CWeb3Socket sock, char* buffer, size_t bufferSize) {
 }
 
 void CWeb3RecvChunk(CWeb3Socket sock, char* buffer, size_t bufferSize) {
-
+    recv(sock.socket, buffer, bufferSize);
 }
+
+#endif /* __linux__*/
