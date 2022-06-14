@@ -18,5 +18,5 @@ int main() {
     CWeb3Routes* routes = CWeb3_new_routes();
     CWeb3_add_route(routes, "/", index);
 
-    printf("new route: %s", routes->array[0].route);
+
 }
