@@ -10,6 +10,6 @@ typedef struct {
 } CWeb3Socket;
 
 CWeb3Socket newCWeb3Socket(CWeb3Config config);
-int CWeb3Listen(CWeb3Socket sock);
-void CWeb3RecvChunk(int clientSocket, char* buffer, size_t bufferSize);
-void CWeb3Send(int clientSocket, char* buffer);
+CWeb3Socket CWeb3Listen(CWeb3Socket sock);
+void CWeb3RecvChunk(CWeb3Socket clientSocket, char* buffer, size_t bufferSize);
+void CWeb3Send(CWeb3Socket clientSocket, char* buffer);

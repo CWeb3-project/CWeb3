@@ -3,6 +3,8 @@
         "config.h": "c",
         "soc.h": "c",
         "socket.h": "c",
-        "inet.h": "c"
+        "inet.h": "c",
+        "types.h": "c",
+        "stdbool.h": "c"
     }
 }

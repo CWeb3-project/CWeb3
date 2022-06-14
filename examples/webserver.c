@@ -27,13 +27,13 @@ int main() {
     config.protocol = TCP;
     config.verbose = 1;
 
-    CWeb3Socket socket = newCWeb3Socket(config);
-    if (!socket.socket) printf("err on serv sock") ;
+    CWeb3Socket server = newCWeb3Socket(config);
+    if (!server.socket) printf("err on serv sock") ;
     while (1)
     {
         // wait till the client connects
-        int client = CWeb3Listen(socket);
-        if (!client) printf("err on clin sock") ;
+        CWeb3Socket client = CWeb3Listen(server);
+        if (!client.socket) printf("err on clin sock") ;
 
         // read the client message
         char buf[3000] = {0};
@@ -56,8 +56,8 @@ int main() {
         CWeb3Send(client, responseBuffer);
         
         // close client socket
-        shutdown(client, SHUT_WR);
+        shutdown(client.socket, SHUT_WR);
     }
     // close server socket
-    shutdown(socket.socket, SHUT_WR);
+    shutdown(server.socket, SHUT_WR);
 }
