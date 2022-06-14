@@ -1,4 +1,5 @@
 #include "../include/http.h"
+#include "../include/hashtable.h"
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>

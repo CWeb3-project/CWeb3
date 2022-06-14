@@ -11,14 +11,17 @@ Hashtable newHashtable(size_t bucketLen){
     return table;
 }
 
-size_t genHash(HashItem key, size_t buckeLen) {
-    uint64_t hash = 0;
-    int8_t* charKey = (int8_t *)key.pItem;
+size_t fnv_hash_1a_64 (int8_t *key, int len ) { // i have no idea where i stole this algorithm from
+    uint8_t* p = (uint8_t *)key;
+    uint64_t h = 0xcbf29ce484222325ULL;
+    for (int32_t i = 0; i < len; i++ )
+      h = ( h ^ p[i] ) * 0x100000001b3ULL;
 
-    for (size_t i = 0; i < key.size; i++ ) {
-        hash *= charKey[i]*charKey[i];
-    }
-    return hash % buckeLen;
+   return h;
+}
+
+size_t genHash(HashItem key, size_t buckeLen) {
+    return fnv_hash_1a_64(key.pItem, key.size) % buckeLen;
 }
 
 HashItem copyHashItem(HashItem original) {
@@ -60,7 +63,6 @@ void addHashValue(Hashtable table, HashPair pair) {
 }
 
 HashItem findInList(HashLinkedNode* pNode, HashItem key) {
-    int t = 0;
     HashItem fail = {0};
     if  (pNode->pair.key.size == key.size) {
         if (!memcmp(pNode->pair.key.pItem, key.pItem, key.size)) return pNode->pair.value;
@@ -72,7 +74,6 @@ HashItem findInList(HashLinkedNode* pNode, HashItem key) {
 
 HashItem getHashValue(Hashtable table, HashItem key) {
     size_t hash = genHash(key, table.bucketLen);
-    HashItem tableKey = table.bucket[hash].pair.key;
 
     return findInList(table.bucket+hash, key);
 }
