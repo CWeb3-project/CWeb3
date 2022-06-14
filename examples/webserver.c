@@ -1,5 +1,4 @@
 #include "../include/soc.h"
-#include "../include/socketServer.h"
 #include <inttypes.h>
 #include <stdio.h>
 #include <string.h>
