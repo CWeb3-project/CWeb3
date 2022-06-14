@@ -1,11 +1,15 @@
-#include "../include/soc.h"
+
 #include "../include/routes.h"
+#include "../include/soc.h"
 #include <stdio.h>
-CWeb3Response index() {
+
+void index() {
 
 }
 
 int main() {
+    printf("DBG");
+
     CWeb3Config config;
     config.host = "127.0.0.1";
     config.port = 10003;
