@@ -1,18 +1,28 @@
 #include "../include/soc.h"
 #include <stdlib.h>
-
-char* CWeb3Recv(CWeb3Socket clientSocket, size_t* bufferSize) {
-    const size_t size = 3000;
+#include <stdio.h>
+char* CWeb3Recv(CWeb3Socket clientSocket, size_t* pBufferSize) {
+    size_t size = 3072;
+    const size_t step = 2048;
+    size_t offset = 0;
+    size_t messageSize = size;
     char* buffer = malloc(size); // malloc so realloc could be used later
 
-    size_t messageSize = CWeb3RecvChunk(clientSocket, buffer, size);
-    size_t newBufferSize = messageSize+1;
-    buffer = realloc(buffer, newBufferSize); // resize the array and add single byte for 0 
 
-    if (size < messageSize) {
-        CWeb3RecvChunk(clientSocket, buffer+size, messageSize-size); // adjust the array so the second part is concataned to the end of the first part
+    while (1) {
+        messageSize = CWeb3RecvChunk(clientSocket, buffer+offset, size-offset);
+        
+        if (messageSize == size-offset) {
+            offset = size;
+            size += step;
+            buffer = realloc(buffer, size);
+        } else break;
+
     }
-    buffer[messageSize] = '\0';
-    *bufferSize = newBufferSize;
+    size_t bufferSize = offset+messageSize;
+    buffer = realloc(buffer, bufferSize+1);
+    buffer[bufferSize] = '\0';
+    bufferSize++;
+    *pBufferSize = bufferSize;    
     return buffer;
 }
