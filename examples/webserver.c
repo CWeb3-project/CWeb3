@@ -37,7 +37,8 @@ int main() {
 
         // read the client message
         char buf[3000] = {0};
-        CWeb3RecvChunk(client, buf, 3000);
+        size_t messageSize = CWeb3RecvChunk(client, buf, 3000);
+        printf("message size: %zu\n\n", messageSize);
         printf("%s\n", buf);
 
         // making the response message 
