@@ -1,4 +1,5 @@
 #include "../include/soc.h"
+#include "../include/socketServer.h"
 #include <inttypes.h>
 #include <stdio.h>
 #include <string.h>
@@ -36,10 +37,10 @@ int main() {
         if (!client.socket) printf("err on clin sock");
 
         // read the client message
-        char buf[3000] = {0};
-        size_t messageSize = CWeb3RecvChunk(client, buf, 3000);
+        size_t messageSize;
+        char* messageBuffer = CWeb3Recv(client, &messageSize);
         printf("message size: %zu\n\n", messageSize);
-        printf("%s\n", buf);
+        printf("%s\n", messageBuffer);
 
         // making the response message 
         uint64_t len;
