@@ -4,8 +4,8 @@
 #include <stdio.h>
 
 enum ConentType {
-    contenttext,
-    contentbytes,
+    contentText,
+    contentBytes,
     contentJSON,
     contentHtml
 };
