@@ -45,12 +45,16 @@ int main() {
         uint64_t len;
         char* File = readFile("index.html", &len);
          
-        char responseBuffer[30000] = "HTTP/1.1 200 OK\r\nContent-Type:text/html\nContent-Lenght:";
-        char lenStr[20] = {0};
-        sprintf(lenStr,"%"PRIu64, len);
-        strcat(responseBuffer, lenStr);
-        strcat(responseBuffer, "\r\n\r\n");
-        strcat(responseBuffer, File);
+        char responseBuffer[30000] =  {0}; 
+        sprintf(responseBuffer ,
+        "HTTP/1.1 200 OK\r\n\
+        Content-Type:text/html\n\
+        Content-Lenght:%i\r\n\r\n\
+        %s",
+        len,
+        File
+        );
+
         free(File);
         
         // send response message
