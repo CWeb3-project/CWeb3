@@ -65,7 +65,7 @@ CWeb3Socket newCWeb3Socket(CWeb3Config config) {
 	freeaddrinfo(result);
 	
 
-
+	return sock;
 }
 
 int CWeb3Listen(CWeb3Socket sock, char* buffer, size_t bufferSize) {
