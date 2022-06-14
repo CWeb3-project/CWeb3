@@ -56,4 +56,10 @@ CMakeCache.txt
 cmake_install.cmake
 CMakeFiles/
 build
-.vscode
+.vscode/
+
+examples/*
+!examples/*.c
+!examples/*.html
+!examples/*.md
+!examples/CMakeLists.txt
