@@ -22,6 +22,8 @@ struct HTTPData
     int codeNum;
 };
 
+char* table[511];
+
 
 void CWeb3HttpRespond(CWeb3Socket clientSocket ,char* body, struct HTTPData httpData) {
     size_t bodyLen = strlen(body);
