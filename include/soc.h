@@ -3,7 +3,6 @@
 #include <inttypes.h>
 #include <stddef.h>
 
-
 typedef struct {
     CWeb3Config config;
     int socket;
