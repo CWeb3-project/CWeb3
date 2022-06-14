@@ -28,12 +28,12 @@ int main() {
     config.verbose = 1;
 
     CWeb3Socket server = newCWeb3Socket(config);
-    if (!server.socket) printf("err on serv sock") ;
+    if (!server.socket) printf("err on serv sock");
     while (1)
     {
         // wait till the client connects
         CWeb3Socket client = CWeb3Listen(server);
-        if (!client.socket) printf("err on clin sock") ;
+        if (!client.socket) printf("err on clin sock");
 
         // read the client message
         char buf[3000] = {0};
