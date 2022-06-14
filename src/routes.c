@@ -6,7 +6,7 @@
 CWeb3Routes* CWeb3_new_routes() {
     CWeb3Routes* routes;
 
-    routes->array = malloc(0 * sizeof(CWeb3Route));
+    routes->array = malloc(100 * sizeof(CWeb3Route));
     routes->used = 0;
     routes->size = 0;
 
@@ -21,7 +21,7 @@ void CWeb3_add_route(CWeb3Routes *routes, const char* _route, void (*callback)()
     route.callback = callback;
 
     if (routes->used == routes->size) {
-        routes->size *= 2;
+        routes->size += 1;
         routes->array = realloc(routes->array, routes->size * sizeof(CWeb3Route));
     }
 

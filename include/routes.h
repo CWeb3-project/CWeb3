@@ -1,5 +1,6 @@
 
 #include "response.h"
+#include <stddef.h>
 
 #ifndef __CWEB3_ROUTES_H_
 #define __CWEB3_ROUTES_H_
