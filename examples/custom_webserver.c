@@ -1,4 +1,5 @@
 #include "../include/soc.h"
+#include "../include/CWEB3Http.h"
 #include <inttypes.h>
 #include <stdio.h>
 #include <string.h>
@@ -23,7 +24,7 @@ char* readFile(const char* path, uint64_t* pLength) {
 int main() {
     CWeb3Config config;
     config.host = "127.0.0.1";
-    config.port = 10003;
+    config.port = 10004;
     config.protocol = TCP;
     config.verbose = 1;
 
@@ -37,29 +38,35 @@ int main() {
 
         // read the client message
         size_t messageSize;
+        printf("ser recv\n");
         char* messageBuffer = CWeb3Recv(client, &messageSize);
-        printf("message size: %zu\n\n", messageSize);
-        printf("%s\n", messageBuffer);
+        printf("ser parse\n");
+        CWEB3HTTPRequest request = CWEB3ParseRequest(messageBuffer);
 
+        char user[] = "User-Agent";
+        HashItem item;
+        item.pItem = user;
+        item.size = sizeof(user);
+
+        printf("message size: %zu\n\n", messageSize);
+        printf("path: %s\n", request.path);
+        printf("body: %s\n", getHashValue(request.header, item).pItem);
+    	// HEADER IS BROKEN
         // making the response message 
         uint64_t len;
         char* File = readFile("index.html", &len);
-         
-        char responseBuffer[30000] =  {0}; 
-        sprintf(responseBuffer ,
-        "HTTP/1.1 200 OK\r\n\
-        Content-Type:text/html\n\
-        Content-Lenght:%"PRIu64"\r\n\r\n\
-        %s",
-        len,
-        File
-        );
+
+        // send response
+        CWEB3HTTPData data;
+        data.codeNum = 200; // 200 OK
+        data.conentType = contentHtml;
+        data.version.major = 1; // Http 1.1
+        data.version.minor = 1;
+
+        CWeb3HttpRespond(client, File, data);
 
         free(File);
-        
-        // send response message
-        CWeb3Send(client, responseBuffer);
-        
+          
         // close client socket
         shutdown(client.socket, SHUT_WR);
     }

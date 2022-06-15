@@ -1,49 +1,13 @@
-#include "../include/http.h"
+#include "../include/CWEB3Http.h"
 #include "../include/hashtable.h"
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 
-enum HTTPConentType {
-    contenttext,
-    contentbytes,
-    contentJSON,
-    contentHtml
-};
-
-enum HTTPMethod {
-    methodGET,
-    MethodPOST,
-    MethodDELETE,
-    MethodPUT
-};
-
-struct Version {
-    int major;
-    int minor;
-};
-
-struct HTTPData
-{
-    struct Version version;
-    enum HTTPConentType conentType;
-    int codeNum;
-};
-
-struct HTTPRequest
-{
-    struct Version version;
-    enum HTTPMethod method;
-    Hashtable header;
-    char* path;
-    char* body;
-};
-
-
 char* table[511];
 
 
-void CWeb3HttpRespond(CWeb3Socket clientSocket, char* body, struct HTTPData httpData) {
+void CWeb3HttpRespond(CWeb3Socket clientSocket, char* body, CWEB3HTTPData httpData) {
     size_t bodyLen = strlen(body);
     size_t len = bodyLen + 2048;
 
@@ -70,13 +34,15 @@ void CWeb3HttpRespond(CWeb3Socket clientSocket, char* body, struct HTTPData http
 
 }
 
-enum HTTPMethod _parseMethod(char* str, size_t* pPos) {
+enum CWEB3HTTPMethod _parseMethod(char* str, size_t* pPos) {
     char strMethod[10] = {0};
+    size_t pos = 0;
 
-    while (str[*pPos] != ' ') {
-        strMethod[*pPos] = str[*pPos];
-        (*pPos)++;
-    }
+    while (str[pos + *pPos] != ' ') {
+        strMethod[pos] = str[pos + *pPos];
+        pos++;
+    } 
+    *pPos = pos + *pPos;
 
     if (!strcmp(strMethod, "GET")) return methodGET;
     else if (!strcmp(strMethod, "POST")) return MethodPOST;
@@ -85,8 +51,8 @@ enum HTTPMethod _parseMethod(char* str, size_t* pPos) {
     else return -1;
 }
 
-struct Version _parseVersion(char* str, size_t* pPos) {
-    struct Version version= {0};
+struct CWEB3Version _parseVersion(char* str, size_t* pPos) {
+    struct CWEB3Version version= {0};
     version.major = str[*pPos] - '0';
     if (str[*pPos+1] == '.') {
         version.minor = str[*pPos + 2] - '0';
@@ -118,9 +84,11 @@ char* _parseCopyUntil(char* str, size_t* pPos, char breakChar) {
     size_t end = *pPos;
     while (str[end] != breakChar)
         end++;
-    size_t size = *pPos - end;
+    size_t size = end - (*pPos);
+    
+
     char* slice = malloc(size +1);
-    memcpy(slice, str+ *pPos, size);
+    memcpy(slice, str+(*pPos), size);
     slice[size] = 0;
     *pPos = end;
 
@@ -142,8 +110,8 @@ int8_t _parseIsHeaderEnd(char* str, size_t pos) {
 
 }
 
-struct HTTPRequest parseHTTPRequest(char* str) {
-    struct HTTPRequest parsedRequest = {0};
+CWEB3HTTPRequest CWEB3ParseRequest(char* str) {
+    CWEB3HTTPRequest parsedRequest = {0};
     parsedRequest.header = newHashtable(512);
     size_t len = strlen(str);
     size_t pos = 0;
