@@ -47,12 +47,21 @@ int main() {
          
         char responseBuffer[30000] =  {0}; 
         sprintf(responseBuffer ,
+<<<<<<< HEAD
             "HTTP/1.1 200 OK\r\n\
             Content-Type:text/html\n\
             Content-Lenght:%i\r\n\r\n\
             %s",
             len,
             File
+=======
+        "HTTP/1.1 200 OK\r\n\
+        Content-Type:text/html\n\
+        Content-Lenght:%"PRIu64"\r\n\r\n\
+        %s",
+        len,
+        File
+>>>>>>> f33dfe2193b27107b7974e9426d17c7f26abf724
         );
 
         free(File);

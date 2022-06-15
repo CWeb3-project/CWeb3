@@ -1,4 +1,5 @@
 #include "../include/http.h"
+#include "../include/hashtable.h"
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -32,9 +33,8 @@ void CWeb3HttpRespond(CWeb3Socket clientSocket ,char* body, struct HTTPData http
     char minorStr[12] = {0};
     sprintf(minorStr, ".%i", httpData.version.minor);
 
-    char codeInfoStr[] = "OK"; // todo: add all the other codes
-    char contentStr[] = "text/html";
-
+    char codeInfoStr[] = "OK"; // todo: add all the other codes, int -> char* lookup
+    char contentStr[] = "text/html"; // todo: enum -> char* lookup
 
     char* response = malloc(len);
     memset(response, 0, len);
