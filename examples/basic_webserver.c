@@ -1,5 +1,6 @@
 
 #include "../include/routes.h"
+#include "../include/server.h"
 #include "../include/soc.h"
 #include <stdio.h>
 
@@ -19,5 +20,9 @@ int main() {
     CWeb3_add_route(routes, "/", index);
 
 
+    CWeb3Server* server = CWeb3_create_server();
+    server->routes = routes;
+    // CWeb3_server_merge_routes(server, routes);
 
+    CWeb3_server_start(server);
 }
