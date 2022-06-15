@@ -38,19 +38,17 @@ int main() {
 
         // read the client message
         size_t messageSize;
-        printf("ser recv\n");
         char* messageBuffer = CWeb3Recv(client, &messageSize);
-        printf("ser parse\n");
         CWEB3HTTPRequest request = CWEB3ParseRequest(messageBuffer);
 
         char user[] = "User-Agent";
-        HashItem item;
-        item.pItem = user;
-        item.size = sizeof(user);
+        HashItem key;
+        key.pItem = user;
+        key.size = sizeof(user);
 
-        printf("message size: %zu\n\n", messageSize);
+        printf("message size: %zu\n", messageSize);
         printf("path: %s\n", request.path);
-        printf("body: %s\n", getHashValue(request.header, item).pItem);
+        printf("user: %s\n", getHashValue(request.header, key).pItem);
     	// HEADER IS BROKEN
         // making the response message 
         uint64_t len;
@@ -64,8 +62,14 @@ int main() {
         data.version.minor = 1;
 
         CWeb3HttpRespond(client, File, data);
-
         free(File);
+
+        /*
+        data.codeNum = 100;
+        data.conentType = contentNone;
+        CWeb3HttpRespond(client, File, data);*/
+
+        
           
         // close client socket
         shutdown(client.socket, SHUT_WR);
