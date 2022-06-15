@@ -1,12 +1,12 @@
 #include "../include/soc.h"
 #include "../include/hashtable.h"
 
-struct CWEB3Version {
+struct CWeb3Version {
     int major;
     int minor;
 };
 
-enum CWEB3ConentType {
+enum CWeb3ConentType {
     contenttext,
     contentbytes,
     contentJSON,
@@ -15,12 +15,12 @@ enum CWEB3ConentType {
 };
 
 typedef struct  {
-    struct CWEB3Version version;
-    enum CWEB3ConentType conentType;
+    struct CWeb3Version version;
+    enum CWeb3ConentType conentType;
     int codeNum;
-} CWEB3HTTPData;
+} CWeb3HTTPData;
 
-enum CWEB3HTTPMethod {
+enum CWeb3HTTPMethod {
     methodGET,
     MethodPOST,
     MethodDELETE,
@@ -29,13 +29,14 @@ enum CWEB3HTTPMethod {
 
 typedef struct 
 {
-    struct CWEB3Version version;
-    enum CWEB3HTTPMethod method;
+    struct CWeb3Version version;
+    enum CWeb3HTTPMethod method;
     Hashtable header;
     char* path;
     char* body;
-} CWEB3HTTPRequest;
+} CWeb3HTTPRequest;
 
 
-void CWeb3HttpRespond(CWeb3Socket clientSocket, char* body, CWEB3HTTPData httpData);
-CWEB3HTTPRequest CWEB3ParseRequest(char* str);
+void CWeb3HttpRespond(CWeb3Socket clientSocket, char* body, CWeb3HTTPData httpData);
+CWeb3HTTPRequest CWeb3ParseRequest(char* str);
+void freeCWeb3HTTPRequest(CWeb3HTTPRequest request);

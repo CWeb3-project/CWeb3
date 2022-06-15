@@ -4,17 +4,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-char* table[511];
-
-
-void CWeb3HttpRespond(CWeb3Socket clientSocket, char* body, CWEB3HTTPData httpData) {
+void CWeb3HttpRespond(CWeb3Socket clientSocket, char* body, CWeb3HTTPData httpData) {
     size_t bodyLen = strlen(body);
     size_t len = bodyLen + 2048;
-
+    
     char minorStr[12] = {0};
     sprintf(minorStr, ".%i", httpData.version.minor);
 
-    char codeInfoStr[] = "OK"; // todo: add all the other codes, int -> char* lookup
+    char OK[] = "OK"; // todo: add all the other codes, int -> char* lookup
     char contentStr[] = "text/html"; // todo: enum -> char* lookup
 
     char* response = malloc(len);
@@ -24,17 +21,16 @@ void CWeb3HttpRespond(CWeb3Socket clientSocket, char* body, CWEB3HTTPData httpDa
     Content-Type:%s\n\
     Content-Lenght:%zu\r\n\r\n\
     %s",
-    httpData.version.major, minorStr, httpData.codeNum, codeInfoStr,
+    httpData.version.major, minorStr, httpData.codeNum, OK,
     contentStr,
     bodyLen,
     body
     );
 
     CWeb3Send(clientSocket, response);
-
 }
 
-enum CWEB3HTTPMethod _parseMethod(char* str, size_t* pPos) {
+enum CWeb3HTTPMethod _parseMethod(char* str, size_t* pPos) {
     char strMethod[10] = {0};
     size_t pos = 0;
 
@@ -51,8 +47,8 @@ enum CWEB3HTTPMethod _parseMethod(char* str, size_t* pPos) {
     else return -1;
 }
 
-struct CWEB3Version _parseVersion(char* str, size_t* pPos) {
-    struct CWEB3Version version= {0};
+struct CWeb3Version _parseVersion(char* str, size_t* pPos) {
+    struct CWeb3Version version= {0};
     version.major = str[*pPos] - '0';
     if (str[*pPos+1] == '.') {
         version.minor = str[*pPos + 2] - '0';
@@ -109,8 +105,8 @@ int8_t _parseIsHeaderEnd(char* str, size_t pos) {
 
 }
 
-CWEB3HTTPRequest CWEB3ParseRequest(char* str) {
-    CWEB3HTTPRequest parsedRequest = {0};
+CWeb3HTTPRequest CWeb3ParseRequest(char* str) {
+    CWeb3HTTPRequest parsedRequest = {0};
     parsedRequest.header = newHashtable(512);
     size_t len = strlen(str);
     size_t pos = 0;
@@ -157,4 +153,10 @@ CWEB3HTTPRequest CWEB3ParseRequest(char* str) {
     else parsedRequest.body = 0;
 
     return parsedRequest;
+}
+
+void freeCWeb3HTTPRequest(CWeb3HTTPRequest request) {
+    freeHashtable(request.header);
+    free(request.path);
+    if (request.body != 0) free(request.body);
 }
