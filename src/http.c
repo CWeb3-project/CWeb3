@@ -71,7 +71,7 @@ void _parseSkipWhiteSpace(char* str, size_t* pPos) {
         case '\n':
         case '\r':
         case '\t':
-            pPos += 1;
+            *pPos += 1;
             break;
         default:
             return;
@@ -82,16 +82,15 @@ void _parseSkipWhiteSpace(char* str, size_t* pPos) {
 
 char* _parseCopyUntil(char* str, size_t* pPos, char breakChar) {
     size_t end = *pPos;
+    size_t start = *pPos;
     while (str[end] != breakChar)
         end++;
-    size_t size = end - (*pPos);
-    
+    size_t size = end - start;
 
     char* slice = malloc(size +1);
-    memcpy(slice, str+(*pPos), size);
+    memcpy(slice, str+start, size);
     slice[size] = 0;
     *pPos = end;
-
     return slice;
 }
 
@@ -99,7 +98,7 @@ HashItem _parseIntoItem(char* str, size_t* pPos, char breakChar) {
     HashItem item;
     size_t beforePos = *pPos;
     item.pItem = _parseCopyUntil(str, pPos, breakChar);
-    item.size = *pPos-beforePos +1;
+    item.size = (*pPos)-beforePos +1;
     return item;
 }
 
@@ -120,17 +119,20 @@ CWEB3HTTPRequest CWEB3ParseRequest(char* str) {
     parsedRequest.path = _parseCopyUntil(str, &pos, ' ');
     pos += 6; // skip " HTTP/" part
     parsedRequest.version = _parseVersion(str, &pos);
+    pos++;
     _parseSkipWhiteSpace(str, &pos);
-    
+
     int isHeader = 1;
     while (isHeader)
     {
         HashPair pair;
         pair.key = _parseIntoItem(str, &pos, ':');
+        pos++;
         _parseSkipWhiteSpace(str, &pos);
         pair.value = _parseIntoItem(str, &pos, '\n');
+        
         size_t check = pair.value.size-2;
-
+       
         // check if it's the end of the header 
         char* valueStr =  (char *)pair.value.pItem;
         if (valueStr[check] == '\r') {
@@ -139,17 +141,20 @@ CWEB3HTTPRequest CWEB3ParseRequest(char* str) {
             // not a byte leak, because the memory is going to be freed soon
             if (_parseIsHeaderEnd(str, pos-1)) {
                 isHeader = 0;
-                pos += 3;
+                pos += 2;
             }
         }
-
+        pos++;
         addHashValue(parsedRequest.header, pair);
         freeHashPair(pair);
     }
-    
-    size_t bodySize = len - pos +1;
-    parsedRequest.body = malloc(bodySize);
-    memcpy(parsedRequest.body, str+pos, bodySize);
+
+    if (pos < len) {
+        size_t bodySize = len - pos +1;
+        parsedRequest.body = malloc(bodySize);
+        memcpy(parsedRequest.body, str+pos, bodySize);
+    }
+    else parsedRequest.body = 0;
 
     return parsedRequest;
 }

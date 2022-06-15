@@ -10,7 +10,8 @@ enum CWEB3ConentType {
     contenttext,
     contentbytes,
     contentJSON,
-    contentHtml
+    contentHtml,
+    contentNone
 };
 
 typedef struct  {
