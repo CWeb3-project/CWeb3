@@ -19,10 +19,8 @@ int main() {
     CWeb3Routes* routes = CWeb3_new_routes();
     CWeb3_add_route(routes, "/", index);
 
-
     CWeb3Server* server = CWeb3_create_server();
-    server->routes = routes;
-    // CWeb3_server_merge_routes(server, routes);
+    CWeb3_server_merge_routes(server, routes);
 
     CWeb3_server_start(server);
 }
