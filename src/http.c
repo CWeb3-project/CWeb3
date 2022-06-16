@@ -4,8 +4,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void CWeb3HttpRespond(CWeb3Socket clientSocket, char* body, CWeb3HTTPData httpData) {
-    size_t bodyLen = strlen(body);
+void* CWeb3HttpRespond(CWeb3Socket clientSocket, char* body, size_t bodySize, CWeb3HTTPData httpData) {
+    size_t bodyLen = bodySize;
     size_t len = bodyLen + 2048;
 
     char minorStr[12] = {0};
@@ -17,16 +17,17 @@ void CWeb3HttpRespond(CWeb3Socket clientSocket, char* body, CWeb3HTTPData httpDa
     char* response = malloc(len);
     memset(response, 0, len);
     sprintf(response,
-    "HTTP/%i%s %i %s\r\n\
-    Content-Type:%s\n\
-    Content-Lenght:%zu\r\n\r\n\
-    %s",
+"HTTP/%i%s %i %s\r\n\
+Content-Type:%s\r\n\
+Content-Lenght:%zu\r\n\r\n",
     httpData.version.major, minorStr, httpData.codeNum, OK,
     contentStr,
-    bodyLen,
-    body
+    bodyLen
     );
-    CWeb3Send(clientSocket, response);
+    size_t headSize = strlen(response);
+    memcpy(response+headSize, body, bodySize);
+    CWeb3Send(clientSocket, response, headSize+bodySize);
+    return response;
 }
 
 enum CWeb3HTTPMethod _parseMethod(char* str, size_t* pPos) {

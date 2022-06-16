@@ -96,8 +96,8 @@ size_t CWeb3RecvChunk(CWeb3Socket clientSocket, char* buffer, size_t bufferSize)
 	return recv(clientSocket.socket, buffer, (int)bufferSize, 0);
 }
 
-void CWeb3Send(CWeb3Socket clientSocket, char* buffer) {
-	send(clientSocket.socket, buffer, (int)strlen(buffer), 0);
+void CWeb3Send(CWeb3Socket clientSocket, char* buffer, size_t bufferSize) {
+	send(clientSocket.socket, buffer, (int)bufferSize, 0);
 }
 
 void CWeb3CloseSocket(CWeb3Socket socket) {

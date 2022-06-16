@@ -38,6 +38,6 @@ typedef struct
 } CWeb3HTTPRequest;
 
 
-void CWeb3HttpRespond(CWeb3Socket clientSocket, char* body, CWeb3HTTPData httpData);
+void* CWeb3HttpRespond(CWeb3Socket clientSocket, char* body, size_t bodySize, CWeb3HTTPData httpData);
 CWeb3HTTPRequest CWeb3ParseRequest(char* str);
 void freeCWeb3HTTPRequest(CWeb3HTTPRequest request);
