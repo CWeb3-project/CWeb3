@@ -4,7 +4,7 @@
 #include "../include/routes.h"
 
 CWeb3Routes* CWeb3_new_routes() {
-    CWeb3Routes* routes;
+    CWeb3Routes* routes = malloc(sizeof(CWeb3Routes));
 
     routes->array = malloc(100 * sizeof(CWeb3Route));
     routes->used = 0;
@@ -13,7 +13,7 @@ CWeb3Routes* CWeb3_new_routes() {
     return routes;
 }
 
-void CWeb3_add_route(CWeb3Routes *routes, const char* _route, void (*callback)()) {
+void CWeb3_add_route(CWeb3Routes* routes, const char* _route, void (*callback)()) {
     // routes->used is the number of used entries, because routes->array[routes->used++] updates routes->used only *after* the array has been accessed.
     // Therefore routes->used can go up to routes->size
     CWeb3Route route;

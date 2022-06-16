@@ -22,11 +22,7 @@ char* readFile(const char* path, uint64_t* pLength) {
 int main() {
     CWeb3Config config;
     config.host = "127.0.0.1";
-<<<<<<< HEAD
-    config.port = 8000;
-=======
     config.port = 10003;
->>>>>>> 2ee4f75ec3c44033196d307d96b9bbea19a3121b
     config.protocol = TCP;
     config.verbose = 1;
 

@@ -20,7 +20,6 @@ char* CWeb3Recv(CWeb3Socket clientSocket, size_t* pBufferSize) {
         } else break;
 
     }
-    printf("BUF: %s\n", buffer);
 
     size_t bufferSize = offset+messageSize;
     buffer = realloc(buffer, bufferSize+1);

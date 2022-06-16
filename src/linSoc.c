@@ -16,7 +16,7 @@ CWeb3Socket newCWeb3Socket(CWeb3Config config){
     int protocol = (config.protocol == TCP) ? IPPROTO_TCP : IPPROTO_UDP;
     int connectionType = (config.protocol == TCP) ? SOCK_STREAM : SOCK_DGRAM;
 
-    sock.socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    sock.socket = socket(AF_INET, connectionType, protocol);
     if (sock.socket == -1) {
         CWeb3Socket s = {0};
         return s;
