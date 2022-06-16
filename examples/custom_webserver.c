@@ -22,7 +22,7 @@ char* readFile(const char* path, uint64_t* pLength) {
 int main() {
     CWeb3Config config;
     config.host = "127.0.0.1";
-    config.port = 10004;
+    config.port = 10003;
     config.protocol = TCP;
     config.verbose = 1;
 
@@ -61,11 +61,12 @@ int main() {
         data.version.major = 1; // Http 1.1
         data.version.minor = 1;
 
-        CWeb3HttpRespond(client, File, data);
+        void* response = CWeb3HttpRespond(client, File, len, data);// it can only be cleaned after socket it closed
         free(File);
         
         // close client socket
         CWeb3CloseSocket(client);
+        free(response);
     }
     // close server socket
     CWeb3CloseSocket(server);

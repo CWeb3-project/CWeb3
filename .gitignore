@@ -42,6 +42,11 @@
 *.idb
 *.pdb
 
+# Build files
+*.sln
+*.vcxproj.filters
+*.vcxproj
+
 # Kernel Module Compile Results
 *.mod*
 *.cmd
@@ -56,7 +61,10 @@ CMakeCache.txt
 cmake_install.cmake
 CMakeFiles/
 build/
+Release/
+Debug/
 .vscode/
+*.dir/
 
 examples/*
 !examples/*.c
