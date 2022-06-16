@@ -1,5 +1,7 @@
 #ifdef _WIN32   
 #define WIN32_LEAN_AND_MEAN
+#define _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_DEPRECATE  
 #include <windows.h>
 #include <winsock2.h>
 #include <ws2tcpip.h>
@@ -14,7 +16,8 @@ char isWSAActive = 0;
 
 
 CWeb3Socket newCWeb3Socket(CWeb3Config config) {
-	CWeb3Socket sock;
+	CWeb3Socket sock = {0};
+	sock.config = config;
 	WSADATA wsaData;
 	int iResult;
 
@@ -28,12 +31,13 @@ CWeb3Socket newCWeb3Socket(CWeb3Config config) {
 	}
 	
 	char port[12] = { 0 };
-	itoa(config.port, port, 10);
+	sprintf(port, "%i", config.port);
 	struct addrinfo hints;
 
 	hints.ai_family = AF_INET;
-	hints.ai_socktype = SOCK_STREAM;
+	hints.ai_socktype = (sock.config.protocol == TCP) ? SOCK_STREAM : SOCK_DGRAM;
 	hints.ai_protocol = (sock.config.protocol == TCP) ? IPPROTO_TCP : IPPROTO_UDP;
+
 	hints.ai_flags = AI_PASSIVE;
 
 	struct addrinfo* result;
@@ -68,13 +72,37 @@ CWeb3Socket newCWeb3Socket(CWeb3Config config) {
 	return sock;
 }
 
-int CWeb3Listen(CWeb3Socket sock, char* buffer, size_t bufferSize) {
-	int iResult = listen(sock.socket, SOMAXCONN);
+CWeb3Socket CWeb3Listen(CWeb3Socket socket) {
+	CWeb3Socket clientSocket = { 0 };
+	int iResult = listen(socket.socket, SOMAXCONN);
 	if (iResult == SOCKET_ERROR) {
-		closesocket(sock.socket);
+		closesocket(socket.socket);
 		WSACleanup();
-		return -1;
+		CWeb3Socket soc = { 0 };
+		return soc;
 	}
+	SOCKET ClientSocketI = accept(socket.socket, NULL, NULL);
+	if (ClientSocketI == INVALID_SOCKET) {
+		printf("accept failed with error: %d\n", WSAGetLastError());
+		closesocket(socket.socket);
+		WSACleanup();
+		CWeb3Socket soc = { 0 };
+		return soc;
+	}
+	clientSocket.socket = ClientSocketI;
+	return clientSocket;
+}
+
+size_t CWeb3RecvChunk(CWeb3Socket clientSocket, char* buffer, size_t bufferSize) {
+	return recv(clientSocket.socket, buffer, bufferSize, 0);
+}
+
+void CWeb3Send(CWeb3Socket clientSocket, char* buffer) {
+	send(clientSocket.socket, buffer, strlen(buffer), 0);
+}
+
+void CWeb3CloseSocket(CWeb3Socket socket) {
+	closesocket(socket.socket);
 }
 
 #endif /* _WIN32 */   

@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <sys/socket.h>
 
 char* readFile(const char* path, uint64_t* pLength) {
 	FILE* file = fopen(path, "rb");
@@ -67,8 +66,8 @@ int main() {
         free(File);
         
         // close client socket
-        shutdown(client.socket, SHUT_WR);
+        CWeb3CloseSocket(client);
     }
     // close server socket
-    shutdown(server.socket, SHUT_WR);
+    CWeb3CloseSocket(server);
 }
