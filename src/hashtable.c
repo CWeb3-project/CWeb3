@@ -99,7 +99,7 @@ void freeHashPair(HashPair pair) {
 void freeLinkedListNode(HashLinkedNode* pNode) {
     if (pNode->pNext) freeLinkedListNode(pNode->pNext);
     freeHashPair(pNode->pair);
-    free(pNode);
+    if (pNode->pNext) free(pNode->pNext);
 }
 
 void freeHashtable(Hashtable table) {

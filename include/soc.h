@@ -5,7 +5,7 @@
 
 typedef struct {
     CWeb3Config config;
-    int socket;
+    uint64_t socket;
 } CWeb3Socket;
 
 CWeb3Socket newCWeb3Socket(CWeb3Config config);

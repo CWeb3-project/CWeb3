@@ -29,20 +29,20 @@ CWeb3Socket newCWeb3Socket(CWeb3Config config) {
 		}
 		isWSAActive = 1;
 	}
-	
+
 	char port[12] = { 0 };
 	sprintf(port, "%i", config.port);
-	struct addrinfo hints;
+	struct addrinfo hints = { 0 };
 
-	hints.ai_family = AF_INET;
+	hints.ai_family = AF_INET; // AF_INE6 for ipv6
 	hints.ai_socktype = (sock.config.protocol == TCP) ? SOCK_STREAM : SOCK_DGRAM;
 	hints.ai_protocol = (sock.config.protocol == TCP) ? IPPROTO_TCP : IPPROTO_UDP;
-
 	hints.ai_flags = AI_PASSIVE;
 
-	struct addrinfo* result;
-	iResult = getaddrinfo(NULL, port, &hints, &result);
-	if (iResult) {
+
+	struct addrinfo* result = NULL;
+	iResult = getaddrinfo(sock.config.host, port ,&hints,&result);
+	if (iResult != 0) {
 		WSACleanup();
 		CWeb3Socket sock = { 0 };
 		return sock;
@@ -67,7 +67,6 @@ CWeb3Socket newCWeb3Socket(CWeb3Config config) {
 		return sock;
 	}
 	freeaddrinfo(result);
-	
 
 	return sock;
 }
@@ -94,11 +93,11 @@ CWeb3Socket CWeb3Listen(CWeb3Socket socket) {
 }
 
 size_t CWeb3RecvChunk(CWeb3Socket clientSocket, char* buffer, size_t bufferSize) {
-	return recv(clientSocket.socket, buffer, bufferSize, 0);
+	return recv(clientSocket.socket, buffer, (int)bufferSize, 0);
 }
 
 void CWeb3Send(CWeb3Socket clientSocket, char* buffer) {
-	send(clientSocket.socket, buffer, strlen(buffer), 0);
+	send(clientSocket.socket, buffer, (int)strlen(buffer), 0);
 }
 
 void CWeb3CloseSocket(CWeb3Socket socket) {

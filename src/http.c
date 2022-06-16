@@ -7,7 +7,7 @@
 void CWeb3HttpRespond(CWeb3Socket clientSocket, char* body, CWeb3HTTPData httpData) {
     size_t bodyLen = strlen(body);
     size_t len = bodyLen + 2048;
-    
+
     char minorStr[12] = {0};
     sprintf(minorStr, ".%i", httpData.version.minor);
 
@@ -26,7 +26,6 @@ void CWeb3HttpRespond(CWeb3Socket clientSocket, char* body, CWeb3HTTPData httpDa
     bodyLen,
     body
     );
-
     CWeb3Send(clientSocket, response);
 }
 

@@ -7,7 +7,6 @@
 
 char* readFile(const char* path, uint64_t* pLength) {
 	FILE* file = fopen(path, "rb");
-
 	fseek(file, 0, SEEK_END);
 	 *pLength = ftell(file);
 	fseek(file, 0, SEEK_SET);
@@ -54,7 +53,7 @@ int main() {
         // making the response message 
         uint64_t len;
         char* File = readFile("index.html", &len);
-
+        
         // send response
         CWeb3HTTPData data;
         data.codeNum = 200; // 200 OK
