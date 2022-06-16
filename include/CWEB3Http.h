@@ -1,4 +1,5 @@
 #include "../include/soc.h"
+#include "../include/config.h"
 #include "../include/hashtable.h"
 
 struct CWeb3Version {

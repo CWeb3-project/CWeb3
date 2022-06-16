@@ -22,7 +22,7 @@ char* readFile(const char* path, uint64_t* pLength) {
 int main() {
     CWeb3Config config;
     config.host = "127.0.0.1";
-    config.port = 10004;
+    config.port = 8000;
     config.protocol = TCP;
     config.verbose = 1;
 
@@ -50,10 +50,10 @@ int main() {
         printf("user: %s\n", getHashValue(request.header, key).pItem);
         freeCWeb3HTTPRequest(request);
 
-        // making the response message 
+        // making the response message
         uint64_t len;
         char* File = readFile("index.html", &len);
-        
+
         // send response
         CWeb3HTTPData data;
         data.codeNum = 200; // 200 OK
@@ -63,7 +63,7 @@ int main() {
 
         CWeb3HttpRespond(client, File, data);
         free(File);
-        
+
         // close client socket
         CWeb3CloseSocket(client);
     }

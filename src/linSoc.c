@@ -37,7 +37,7 @@ CWeb3Socket newCWeb3Socket(CWeb3Config config){
 }
 
 CWeb3Socket CWeb3Listen(CWeb3Socket socket) {
-    if (listen(socket.socket, 1) == -1) {
+    if (listen(socket.socket, SOMAXCONN) == -1) {
         // error handling
     } 
 
