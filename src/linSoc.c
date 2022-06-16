@@ -13,11 +13,10 @@ CWeb3Socket newCWeb3Socket(CWeb3Config config){
     CWeb3Socket sock = {0};
     sock.config = config;
 
-    
-    int protocol = (config.protocol == TCP) ? IPPROTO_TCP : IPPROTO_UDP; 
+    int protocol = (config.protocol == TCP) ? IPPROTO_TCP : IPPROTO_UDP;
     int connectionType = (config.protocol == TCP) ? SOCK_STREAM : SOCK_DGRAM;
 
-    sock.socket = socket(AF_INET, connectionType, protocol);
+    sock.socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (sock.socket == -1) {
         CWeb3Socket s = {0};
         return s;
@@ -38,13 +37,15 @@ CWeb3Socket newCWeb3Socket(CWeb3Config config){
 
 CWeb3Socket CWeb3Listen(CWeb3Socket socket) {
     if (listen(socket.socket, SOMAXCONN) == -1) {
+        printf("ERROR\n");
         // error handling
-    } 
+    }
 
     struct sockaddr_in client = {0};
     int clientsize = sizeof(client);
     int clientSockI = accept(socket.socket, (struct sockaddr*)&client, (socklen_t *)&clientsize);
     if (clientSockI == -1)  {
+        printf("ERROR\n");
         // error handling
     }
 

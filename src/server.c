@@ -18,12 +18,13 @@ void CWeb3_server_merge_routes(CWeb3Server* server, CWeb3Routes* routes) {
 void CWeb3_server_start(CWeb3Server* p_server) {
     CWeb3Socket server = newCWeb3Socket(p_server->config);
 
-    if (!server.socket) printf("err on serv sock");
+    if (!server.socket) printf("err on serv sock\n");
     while (1)
     {
         // wait till the client connects
         CWeb3Socket client = CWeb3Listen(server);
-        if (!client.socket) printf("err on clin sock");
+        printf("HELLO\n");
+        if (!client.socket) printf("err on clin sock\n");
 
         // read the client message
         size_t messageSize;
@@ -51,7 +52,7 @@ void CWeb3_server_start(CWeb3Server* p_server) {
         data.version.major = 1; // Http 1.1
         data.version.minor = 1;
 
-        CWeb3HttpRespond(client, "hello", data);
+        CWeb3HttpRespond(client, (char*)"hello", data);
 
         // close client socket
         CWeb3CloseSocket(client);
