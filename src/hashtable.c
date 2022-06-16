@@ -11,12 +11,21 @@ Hashtable newHashtable(size_t bucketLen){
     return table;
 }
 
-size_t fnv_hash_1a_64 (int8_t *key, int len ) { // i have no idea where i stole this algorithm from
+
+/* 
+ * i have no idea where i stole this algorithm from
+ * update: Fowler–Noll–Vo hash function
+ * 1a version
+ * apparently this was the default hash function in python
+ * it was changed bc some ddos attacks
+ * which won't matter when it comes to implementing it here 
+ */
+size_t fnv_hash_1a_64 (int8_t *key, int len ) { 
     uint8_t* p = (uint8_t *)key;
     uint64_t h = 0xcbf29ce484222325ULL;
     for (int32_t i = 0; i < len; i++ )
       h = ( h ^ p[i] ) * 0x100000001b3ULL;
-
+      
    return h;
 }
 
@@ -90,7 +99,7 @@ void freeHashPair(HashPair pair) {
 void freeLinkedListNode(HashLinkedNode* pNode) {
     if (pNode->pNext) freeLinkedListNode(pNode->pNext);
     freeHashPair(pNode->pair);
-    free(pNode);
+    if (pNode->pNext) free(pNode->pNext);
 }
 
 void freeHashtable(Hashtable table) {
