@@ -37,7 +37,7 @@ CWeb3Socket newCWeb3Socket(CWeb3Config config){
 }
 
 CWeb3Socket CWeb3Listen(CWeb3Socket socket) {
-    if (listen(sock.socket, 1) == -1) {
+    if (listen(socket.socket, 1) == -1) {
         // error handling
     } 
 
@@ -64,7 +64,7 @@ void CWeb3Send(CWeb3Socket clientSocket, char* buffer) {
 }
 
 void CWeb3CloseSocket(CWeb3Socket socket) {
-    shutdown(socket, SHUT_WR);
+    shutdown(socket.socket, SHUT_WR);
 }
 
 #endif /* __linux__*/

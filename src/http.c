@@ -4,33 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-<<<<<<< HEAD
-enum ConentType {
-    contentText,
-    contentBytes,
-    contentJSON,
-    contentHtml
-};
-
-struct Version {
-    int major;
-    int minor;
-};
-
-struct HTTPData
-{
-    struct Version version;
-    enum ConentType conentType;
-    int codeNum;
-};
-
-char* table[511];
-
-
-void CWeb3HttpRespond(CWeb3Socket clientSocket ,char* body, struct HTTPData httpData) {
-=======
 void CWeb3HttpRespond(CWeb3Socket clientSocket, char* body, CWeb3HTTPData httpData) {
->>>>>>> 41905642e5a251d0e7c30508a8bc6fa24f114b90
     size_t bodyLen = strlen(body);
     size_t len = bodyLen + 2048;
 
