@@ -6,6 +6,7 @@
 #include <stdlib.h>
 
 #define flag printf("%s:%i\n", __FILE__, __LINE__);
+#define flag(x) printf("ID : %i, FILE : %s:%i\n", x, __FILE__, __LINE__);
 
 char* readFile(const char* path, uint64_t* pLength) {
 	FILE* file = fopen(path, "rb");
@@ -21,31 +22,44 @@ char* readFile(const char* path, uint64_t* pLength) {
 	return buffer;
 }
 
+CWeb3Socket server;
+
 int main(int argc, char** argv) {
     CWeb3Config config;
     config.host = "127.0.0.1";
     config.port = atoi(argv[1]);
     config.protocol = TCP;
     config.verbose = 1;
-    CWeb3Socket server = newCWeb3Socket(config);
-    if (!server.socket_fd) printf("err on serv sock");
-
+    server = newCWeb3Socket(config);
+    if (!server.socket_fd){
+        CWeb3CloseSocket(server);
+        printf("err on server socket\n");
+        exit(1);
+    } 
     
+    CWeb3Listen(server);
     while (1)
-    {
-        CWeb3Listen(server);
-        printf("Connection incoming...");
-
+    {  
         // wait untill the client connects
-        CWeb3Socket client = CWeb3Accept(server, 2*1000);
-        while(0 < client.socket_fd) {
-            printf("l1 %i\n", client.socket_fd);
-            // read the client message
-            size_t messageSize;
+        CWeb3Socket client = CWeb3Accept(server, -1); 
+
+
+        flag(client.socket_fd);
+        // read the client message
+        size_t messageSize;
             
-            char* messageBuffer = CWeb3Recv(client, &messageSize);
+        char* messageBuffer = CWeb3Recv(client, &messageSize);
+
+        /*
+         * if the message is empty it will skip this part
+         * THIS CHECK IS HERE BECAUSE OF EDGE
+         * microsoft at it again
+         * like why does edge create a connection
+         * and then just send 0 bytes through the connection???
+         */
+        if (messageBuffer) { 
             printf("%s\n", messageBuffer);
-           CWeb3HTTPRequest request = CWeb3ParseRequest(messageBuffer);
+            CWeb3HTTPRequest request = CWeb3ParseRequest(messageBuffer);
 
             free(messageBuffer);
 
@@ -56,7 +70,7 @@ int main(int argc, char** argv) {
             // making the response message 
             uint64_t len;
             char* File = readFile("index.html", &len);
-                
+                    
             // send response
             CWeb3HTTPData data;
             data.codeNum = 200; // 200 OK
@@ -66,13 +80,12 @@ int main(int argc, char** argv) {
 
             void* response = CWeb3HttpRespond(client, File, len, data);// it can only be cleaned after socket it closed
             free(File);
-                
+                    
             // close client socket
             CWeb3CloseSocket(client);
             free(response);
-            client = CWeb3Accept(server, -1);
-            printf("l2 %i\n", client.socket_fd);
         }
+        CWeb3CloseSocket(client);
     }
 
     // close server socket
