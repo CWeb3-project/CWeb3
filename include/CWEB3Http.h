@@ -6,18 +6,10 @@ struct CWeb3Version {
     int minor;
 };
 
-enum CWeb3ConentType {
-    contenttext,
-    contentbytes,
-    contentJSON,
-    contentHtml,
-    contentNone
-};
-
 typedef struct  {
     struct CWeb3Version version;
-    enum CWeb3ConentType conentType;
-    int codeNum;
+    char* conentType;
+    char* code;
 } CWeb3HTTPData;
 
 enum CWeb3HTTPMethod {

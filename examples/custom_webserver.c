@@ -22,7 +22,7 @@ char* readFile(const char* path, uint64_t* pLength) {
 	return buffer;
 }
 
-CWeb3Socket server;
+CWeb3ServerSocket server;
 
 int main(int argc, char** argv) {
     CWeb3Config config;
@@ -31,17 +31,22 @@ int main(int argc, char** argv) {
     config.protocol = TCP;
     config.verbose = 1;
     server = newCWeb3Socket(config);
-    if (!server.socket_fd){
-        CWeb3CloseSocket(server);
+    if (server.socket.socket_fd == -1){
+        closeCWeb3Server(server);
         printf("err on server socket\n");
         exit(1);
     } 
     
     CWeb3Listen(server);
+    void* response = 0;
     while (1)
     {  
         // wait untill the client connects
-        CWeb3Socket client = CWeb3Accept(server, -1); 
+        CWeb3Socket client = CWeb3WaitReady(server);
+        if (response) {
+            free(response);
+            response = 0;
+        }
 
         // read the client message
         size_t messageSize;   
@@ -70,21 +75,17 @@ int main(int argc, char** argv) {
                     
             // send response
             CWeb3HTTPData data;
-            data.codeNum = 200; // 200 OK
-            data.conentType = contentHtml;
-            data.version.major = 1; // Http 1.1
+            data.code = "200 OK"; 
+            data.conentType = "text/html";
+            data.version.major = 1;
             data.version.minor = 1;
 
-            void* response = CWeb3HttpRespond(client, File, len, data);// it can only be cleaned after socket it closed
+            response = CWeb3HttpRespond(client, File, len, data);// it can only be cleaned after socket has sent it
             free(File);
-                    
-            // close client socket
-            CWeb3CloseSocket(client);
-            free(response);
+            closeCWeb3Socket(server, client);
         }
-        CWeb3CloseSocket(client);
     }
 
     // close server socket
-    CWeb3CloseSocket(server);
+    closeCWeb3Server(server);
 }
