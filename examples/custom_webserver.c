@@ -27,64 +27,52 @@ CWeb3Socket server;
 int main(int argc, char** argv) {
     CWeb3Config config;
     config.host = "127.0.0.1";
+
     config.port = atoi(argv[1]);
     config.protocol = TCP;
     config.verbose = 1;
-    server = newCWeb3Socket(config);
-    if (!server.socket_fd){
-        CWeb3CloseSocket(server);
-        printf("err on server socket\n");
-        exit(1);
-    } 
-    
-    CWeb3Listen(server);
+
+
+    CWeb3Socket server = newCWeb3Socket(config);
+    if (!server.socket) printf("err on serv sock");
     while (1)
-    {  
-        // wait untill the client connects
-        CWeb3Socket client = CWeb3Accept(server, -1); 
+    {
+        // wait till the client connects
+        CWeb3Socket client = CWeb3Listen(server);
+        if (!client.socket) printf("err on clin sock");
 
         // read the client message
         size_t messageSize;   
         char* messageBuffer = CWeb3Recv(client, &messageSize);
 
-        /*
-         * if the message is empty it will skip this part
-         * THIS CHECK IS HERE BECAUSE OF EDGE
-         * microsoft at it again
-         * like why does edge create a connection
-         * and then just send 0 bytes through the connection???
-         */
-        if (messageBuffer) { 
-            printf("%s\n", messageBuffer);
-            CWeb3HTTPRequest request = CWeb3ParseRequest(messageBuffer);
+        char user[] = "User-Agent";
+        HashItem key;
+        key.pItem = user;
+        key.size = sizeof(user);
 
-            free(messageBuffer);
+        // general debug
+        printf("path: %s\n", request.path);
+        printf("user: %s\n", getHashValue(request.header, key).pItem);
+        freeCWeb3HTTPRequest(request);
 
-            // general debug
-            printf("path: %s\n", request.path);
-            freeCWeb3HTTPRequest(request);
+        // making the response message 
+        uint64_t len;
+        char* File = readFile("index.html", &len);
+        
+        // send response
+        CWeb3HTTPData data;
+        data.codeNum = 200; // 200 OK
+        data.conentType = contentHtml;
+        data.version.major = 1; // Http 1.1
+        data.version.minor = 1;
 
-            // making the response message 
-            uint64_t len;
-            char* File = readFile("index.html", &len);
-                    
-            // send response
-            CWeb3HTTPData data;
-            data.codeNum = 200; // 200 OK
-            data.conentType = contentHtml;
-            data.version.major = 1; // Http 1.1
-            data.version.minor = 1;
-
-            void* response = CWeb3HttpRespond(client, File, len, data);// it can only be cleaned after socket it closed
-            free(File);
-                    
-            // close client socket
-            CWeb3CloseSocket(client);
-            free(response);
-        }
+        void* response = CWeb3HttpRespond(client, File, len, data);// it can only be cleaned after socket it closed
+        free(File);
+        
+        // close client socket
         CWeb3CloseSocket(client);
+        free(response);
     }
-
     // close server socket
     CWeb3CloseSocket(server);
 }
