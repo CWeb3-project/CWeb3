@@ -107,8 +107,13 @@ int8_t _parseIsHeaderEnd(char* str, size_t pos) {
 
 CWeb3HTTPRequest CWeb3ParseRequest(char* str) {
     CWeb3HTTPRequest parsedRequest = {0};
-    parsedRequest.header = newHashtable(512);
     size_t len = strlen(str);
+    if (len < 22) {
+        CWeb3HTTPRequest err = {0};
+        return err;
+    }
+    
+    parsedRequest.header = newHashtable(512);
     size_t pos = 0;
     parsedRequest.method = _parseMethod(str, &pos);
     pos++;

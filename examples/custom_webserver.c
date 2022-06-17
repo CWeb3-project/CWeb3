@@ -43,11 +43,8 @@ int main(int argc, char** argv) {
         // wait untill the client connects
         CWeb3Socket client = CWeb3Accept(server, -1); 
 
-
-        flag(client.socket_fd);
         // read the client message
-        size_t messageSize;
-            
+        size_t messageSize;   
         char* messageBuffer = CWeb3Recv(client, &messageSize);
 
         /*
