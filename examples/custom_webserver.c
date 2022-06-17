@@ -38,15 +38,10 @@ int main(int argc, char** argv) {
     } 
     
     CWeb3Listen(server);
-    void* response = 0;
     while (1)
     {  
         // wait untill the client connects
         CWeb3Socket client = CWeb3WaitReady(server);
-        if (response) {
-            free(response);
-            response = 0;
-        }
 
         // read the client message
         size_t messageSize;   
@@ -80,9 +75,10 @@ int main(int argc, char** argv) {
             data.version.major = 1;
             data.version.minor = 1;
 
-            response = CWeb3HttpRespond(client, File, len, data);// it can only be cleaned after socket has sent it
+            void* response = CWeb3HttpRespond(client, File, len, data);// it can only be cleaned after socket has sent it
             free(File);
-            closeCWeb3Socket(server, client);
+            closeCWeb3Socket(server, client); // data is sent after shutting down the socket. why???
+            free(response);
         }
     }
 
