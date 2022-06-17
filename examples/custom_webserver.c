@@ -44,6 +44,7 @@ int main(int argc, char** argv) {
         // read the client message
         size_t messageSize;   
         char* messageBuffer = CWeb3Recv(client, &messageSize);
+        CWeb3HTTPRequest request = CWeb3ParseRequest(messageBuffer);
 
         char user[] = "User-Agent";
         HashItem key;
