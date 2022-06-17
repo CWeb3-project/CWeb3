@@ -57,12 +57,16 @@ void CWeb3Listen(CWeb3Socket socket) {
     }
 }
 
-CWeb3Socket CWeb3Accept(CWeb3Socket socket) {
+CWeb3Socket CWeb3Accept(CWeb3Socket socket, int64_t timeoutMS) {
     struct epoll_event events;
 
-    int s = epoll_wait(socket.poll_fd, &events, 1, -1);
-    printf("%i\n",s);
-
+    int s = epoll_wait(socket.poll_fd, &events, 1, timeoutMS);
+    if (s < 1) {
+        CWeb3Socket socket = {0};
+        socket.socket_fd = s;
+        return socket;
+    }
+    
     struct sockaddr_in client = {0};
     int clientsize = sizeof(client);
     int clientSockI = accept(socket.socket_fd, (struct sockaddr*)&client, (socklen_t *)&clientsize);
