@@ -1,5 +1,5 @@
-#include "../include/soc.h"
-#include "../include/hashtable.h"
+#include "soc.h"
+#include "hashtable.h"
 
 struct CWeb3Version {
     int major;
