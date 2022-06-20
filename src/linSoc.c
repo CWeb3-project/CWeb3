@@ -8,6 +8,7 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <stddef.h>
+#include <unistd.h>
 
 CWeb3Socket newCWeb3Socket(CWeb3Config config){
     CWeb3Socket sock = {0};
@@ -66,6 +67,7 @@ void CWeb3Send(CWeb3Socket clientSocket, char* buffer, size_t bufferSize) {
 
 void CWeb3CloseSocket(CWeb3Socket socket) {
     shutdown(socket.socket, SHUT_WR);
+    close(socket.socket);
 }
 
 #endif /* __linux__*/

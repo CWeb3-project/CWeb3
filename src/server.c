@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <signal.h>
 
 CWeb3Server CWeb3_create_server(CWeb3Config config) {
     CWeb3Server s;
@@ -11,12 +12,20 @@ CWeb3Server CWeb3_create_server(CWeb3Config config) {
     return s;
 }
 
-void CWeb3_server_merge_routes(CWeb3Server server, CWeb3Routes routes) {
-    server.routes = routes;
+void CWeb3_server_merge_routes(CWeb3Server* pServer, CWeb3Routes routes) {
+    pServer->routes = routes;
+}
+
+CWeb3Socket server;
+void handle(int code) {
+    printf("Recieved SIGINT, quiting...");
+    CWeb3CloseSocket(server);
+    exit(1);
 }
 
 void CWeb3_server_start(CWeb3Server p_server) {
     CWeb3Socket server = newCWeb3Socket(p_server.config);
+    signal(SIGINT, handle);
 
     if (!server.socket) printf("err on serv sock\n");
     while (1)
