@@ -12,11 +12,11 @@ int main() {
 
     CWeb3Config config;
     config.host = "127.0.0.1";
-    config.port = 8000;
+    config.port = 8002;
     config.protocol = TCP;
     config.verbose = 1;
 
-    CWeb3Routes* routes = CWeb3_new_routes();
+    CWeb3Routes routes = CWeb3_new_routes();
     CWeb3_add_route(routes, "/", index);
 
     CWeb3Server server = CWeb3_create_server(config);
