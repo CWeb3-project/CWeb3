@@ -36,7 +36,7 @@ void CWeb3_server_start(CWeb3Server p_server) {
         // Calling the function
         for (int i = 0; i < p_server.routes.used; i++) {
             // TODO: better logging
-            // printf("request: %s", )
+            printf("request: %s\n", p_server.routes.array[i].route);
 
             if (strcmp(p_server.routes.array[i].route, request.path) == 0) {
                 printf("FOUND!\n");

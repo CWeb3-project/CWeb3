@@ -20,6 +20,6 @@ typedef struct
 } CWeb3Routes;
 
 CWeb3Routes CWeb3_new_routes();
-void CWeb3_add_route(CWeb3Routes routes, const char* route, void (*callback)());
+CWeb3Routes CWeb3_add_route(CWeb3Routes routes, const char* route, void (*callback)());
 
 #endif /* __CWEB3_ROUTES_H_ */

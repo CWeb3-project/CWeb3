@@ -13,7 +13,7 @@ CWeb3Routes CWeb3_new_routes() {
     return routes;
 }
 
-void CWeb3_add_route(CWeb3Routes routes, const char* _route, void (*callback)()) {
+CWeb3Routes CWeb3_add_route(CWeb3Routes routes, const char* _route, void (*callback)()) {
     // routes.used is the number of used entries, because routes.array[routes.used++] updates routes.used only *after* the array has been accessed.
     // Therefore routes.used can go up to routes.size
     CWeb3Route route;
@@ -26,5 +26,6 @@ void CWeb3_add_route(CWeb3Routes routes, const char* _route, void (*callback)())
     }
 
     routes.array[routes.used++] = route;
+    return routes;
 }
 
