@@ -17,10 +17,10 @@ void* CWeb3HttpRespond(CWeb3Socket clientSocket, char* body, size_t bodySize, CW
     char* response = malloc(len);
     memset(response, 0, len);
     sprintf(response,
-"HTTP/%i%s %i %s\r\n\
+"HTTP/%i%s %s\r\n\
 Content-Type:%s\r\n\
 Content-Lenght:%zu\r\n\r\n",
-    httpData.version.major, minorStr, httpData.codeNum, OK,
+    httpData.version.major, minorStr, httpData.code, OK,
     contentStr,
     bodyLen
     );

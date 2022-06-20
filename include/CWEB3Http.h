@@ -16,8 +16,8 @@ enum CWeb3ConentType {
 
 typedef struct  {
     struct CWeb3Version version;
-    enum CWeb3ConentType conentType;
-    int codeNum;
+    char* conentType;
+    char* code;
 } CWeb3HTTPData;
 
 enum CWeb3HTTPMethod {
@@ -30,7 +30,7 @@ enum CWeb3HTTPMethod {
 typedef struct 
 {
     struct CWeb3Version version;
-    enum CWeb3HTTPMethod method;
+    enum  method;
     Hashtable header;
     char* path;
     char* body;
