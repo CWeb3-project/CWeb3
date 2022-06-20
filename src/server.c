@@ -11,8 +11,8 @@ CWeb3Server CWeb3_create_server(CWeb3Config config) {
     return s;
 }
 
-void CWeb3_server_merge_routes(CWeb3Server server, CWeb3Routes* routes) {
-    server.routes = realloc(routes, sizeof(CWeb3Routes));
+void CWeb3_server_merge_routes(CWeb3Server server, CWeb3Routes routes) {
+    server.routes = routes;
 }
 
 void CWeb3_server_start(CWeb3Server p_server) {
@@ -32,18 +32,19 @@ void CWeb3_server_start(CWeb3Server p_server) {
         free(messageBuffer);
 
         // general debug
-        freeCWeb3HTTPRequest(request);
 
         // Calling the function
-        for (int i = 0; i < p_server.routes->used; i++) {
+        for (int i = 0; i < p_server.routes.used; i++) {
             // TODO: better logging
             // printf("request: %s", )
 
-            if (strcmp(p_server.routes->array[i].route, request.path) == 0) {
+            if (strcmp(p_server.routes.array[i].route, request.path) == 0) {
                 printf("FOUND!\n");
             }
         }
-        
+
+        freeCWeb3HTTPRequest(request);
+
         // send response
         CWeb3HTTPData data;
         data.codeNum = 200; // 200 OK
