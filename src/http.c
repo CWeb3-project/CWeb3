@@ -9,10 +9,8 @@ void* CWeb3HttpRespond(CWeb3Socket clientSocket, char* body, size_t bodySize, CW
     size_t len = bodyLen + 2048;
 
     char minorStr[12] = {0};
-    sprintf(minorStr, ".%i", httpData.version.minor);
-
-    char OK[] = "OK"; // todo: add all the other codes, int -> char* lookup
-    char contentStr[] = "text/html"; // todo: enum -> char* lookup
+    if (httpData.version.minor != 0)
+        sprintf(minorStr, ".%i", httpData.version.minor);
 
     char* response = malloc(len);
     memset(response, 0, len);
@@ -20,8 +18,8 @@ void* CWeb3HttpRespond(CWeb3Socket clientSocket, char* body, size_t bodySize, CW
 "HTTP/%i%s %s\r\n\
 Content-Type:%s\r\n\
 Content-Lenght:%zu\r\n\r\n",
-    httpData.version.major, minorStr, httpData.code, OK,
-    contentStr,
+    httpData.version.major, minorStr, httpData.code,
+    httpData.conentType,
     bodyLen
     );
     size_t headSize = strlen(response);
