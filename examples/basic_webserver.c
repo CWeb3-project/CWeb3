@@ -5,14 +5,14 @@
 #include <stdio.h>
 
 void index() {
-
+    printf("INDEX HAS BEEN CALLED!\n");
 }
 
 int main() {
 
     CWeb3Config config;
     config.host = "127.0.0.1";
-    config.port = 8018;
+    config.port = 8019;
     config.protocol = TCP;
     config.verbose = 1;
 
