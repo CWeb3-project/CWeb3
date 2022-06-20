@@ -18,7 +18,7 @@ void CWeb3_server_merge_routes(CWeb3Server* pServer, CWeb3Routes routes) {
 
 CWeb3Socket server;
 void handle(int code) {
-    printf("Recieved SIGINT, quiting...");
+    printf("\nRecieved SIGINT, quiting...\n");
     CWeb3CloseSocket(server);
     exit(1);
 }

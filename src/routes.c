@@ -14,21 +14,20 @@ CWeb3Routes CWeb3_new_routes() {
     return routes;
 }
 
-CWeb3Routes CWeb3_add_route(CWeb3Routes routes, const char* _route, void (*callback)()) {
+void CWeb3_add_route(CWeb3Routes* pRoutes, const char* _route, void (*callback)()) {
     // routes.used is the number of used entries, because routes.array[routes.used++] updates routes.used only *after* the array has been accessed.
     // Therefore routes.used can go up to routes.size
     CWeb3Route route;
     size_t strSize = strlen(_route)+1;
     route.route = malloc(strSize);
-    memcpy(route.route, _route, strSize);
+    memcpy((void *)route.route, _route, strSize);
     route.callback = callback;
 
-    if (routes.used == routes.size) {
-        routes.size += 1;
-        routes.array = realloc(routes.array, routes.size * sizeof(CWeb3Route));
+    if (pRoutes->used == pRoutes->size) {
+        pRoutes->size += 1;
+        pRoutes->array = realloc(pRoutes->array, pRoutes->size * sizeof(CWeb3Route));
     }
 
-    routes.array[routes.used++] = route;
-    return routes;
+    pRoutes->array[pRoutes->used++] = route;
 }
 
