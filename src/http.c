@@ -146,7 +146,7 @@ CWeb3HTTPRequest CWeb3ParseRequest(char* str) {
             }
         }
         pos++;
-        addHashValue(parsedRequest.header, pair);
+        hashtableAdd(parsedRequest.header, pair);
         freeHashPair(pair);
     }
 

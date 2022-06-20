@@ -53,7 +53,7 @@ int main(int argc, char** argv) {
 
         // general debug
         printf("path: %s\n", request.path);
-        printf("user: %s\n", getHashValue(request.header, key).pItem);
+        printf("user: %s\n", hashtableGet(request.header, key).pItem);
         freeCWeb3HTTPRequest(request);
 
         // making the response message 

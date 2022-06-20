@@ -53,7 +53,7 @@ HashLinkedNode* getLastNode(HashLinkedNode* pNode) {
     else return getLastNode(pNode);
 }
 
-void addHashValue(Hashtable table, HashPair pair) {
+void hashtableAdd(Hashtable table, HashPair pair) {
     HashPair newPair = copyHashPair(pair);
     size_t hash = genHash(newPair.key, table.bucketLen);
     HashLinkedNode linkedNode;
@@ -81,7 +81,7 @@ HashItem findInList(HashLinkedNode* pNode, HashItem key) {
     } else return fail;
 }
 
-HashItem getHashValue(Hashtable table, HashItem key) {
+HashItem hashtableGet(Hashtable table, HashItem key) {
     size_t hash = genHash(key, table.bucketLen);
 
     return findInList(table.bucket+hash, key);
