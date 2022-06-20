@@ -30,7 +30,7 @@ enum CWeb3HTTPMethod {
 typedef struct 
 {
     struct CWeb3Version version;
-    enum  method;
+    enum CWeb3HTTPMethod method;
     Hashtable header;
     char* path;
     char* body;
