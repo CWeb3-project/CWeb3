@@ -36,7 +36,7 @@ void CWeb3_server_start(CWeb3Server p_server) {
         // wait till the client connects
         CWeb3Socket client = CWeb3Listen(server);
         if (!client.socket) printf("err on clin sock\n");
-        
+
         // read the client message
         size_t messageSize;
         char* messageBuffer = CWeb3Recv(client, &messageSize);
@@ -73,7 +73,7 @@ void CWeb3_server_start(CWeb3Server p_server) {
         data.version.minor = 1;
         data.conentType = response.content_type;
 
-        void* res = CWeb3HttpRespond(client, response.data, sizeof(response.data) / sizeof(char*), data);
+        void* res = CWeb3HttpRespond(client, response.data, strlen(response.data), data);
 
         // free
         freeCWeb3HTTPRequest(req);

@@ -12,7 +12,7 @@ int main() {
 
     CWeb3Config config;
     config.host = "127.0.0.1";
-    config.port = 8004;
+    config.port = 8000;
     config.protocol = TCP;
     config.verbose = 1;
 
