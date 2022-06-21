@@ -1,30 +1,25 @@
-#include "../include/soc.h"
-#include "../include/hashtable.h"
+#include "soc.h"
+#include "config.h"
+#include "hashtable.h"
+
+#pragma once
 
 struct CWeb3Version {
     int major;
     int minor;
 };
 
-enum CWeb3ConentType {
-    contenttext,
-    contentbytes,
-    contentJSON,
-    contentHtml,
-    contentNone
-};
-
 typedef struct  {
     struct CWeb3Version version;
-    enum CWeb3ConentType conentType;
+    const char* conentType;
     int codeNum;
 } CWeb3HTTPData;
 
 enum CWeb3HTTPMethod {
     methodGET,
-    MethodPOST,
-    MethodDELETE,
-    MethodPUT
+    methodPOST,
+    methodDELETE,
+    methodPUT
 };
 
 typedef struct 
@@ -40,3 +35,4 @@ typedef struct
 void* CWeb3HttpRespond(CWeb3Socket clientSocket, char* body, size_t bodySize, CWeb3HTTPData httpData);
 CWeb3HTTPRequest CWeb3ParseRequest(char* str);
 void freeCWeb3HTTPRequest(CWeb3HTTPRequest request);
+char* getHTTPMethod(enum CWeb3HTTPMethod method);

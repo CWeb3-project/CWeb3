@@ -8,13 +8,13 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <stddef.h>
+#include <unistd.h>
 
 CWeb3Socket newCWeb3Socket(CWeb3Config config){
     CWeb3Socket sock = {0};
     sock.config = config;
 
-    
-    int protocol = (config.protocol == TCP) ? IPPROTO_TCP : IPPROTO_UDP; 
+    int protocol = (config.protocol == TCP) ? IPPROTO_TCP : IPPROTO_UDP;
     int connectionType = (config.protocol == TCP) ? SOCK_STREAM : SOCK_DGRAM;
 
     sock.socket = socket(AF_INET, connectionType, protocol);
@@ -38,13 +38,15 @@ CWeb3Socket newCWeb3Socket(CWeb3Config config){
 
 CWeb3Socket CWeb3Listen(CWeb3Socket socket) {
     if (listen(socket.socket, SOMAXCONN) == -1) {
+        printf("ERROR\n");
         // error handling
-    } 
+    }
 
     struct sockaddr_in client = {0};
     int clientsize = sizeof(client);
     int clientSockI = accept(socket.socket, (struct sockaddr*)&client, (socklen_t *)&clientsize);
     if (clientSockI == -1)  {
+        printf("ERROR\n");
         // error handling
     }
 
@@ -65,6 +67,7 @@ void CWeb3Send(CWeb3Socket clientSocket, char* buffer, size_t bufferSize) {
 
 void CWeb3CloseSocket(CWeb3Socket socket) {
     shutdown(socket.socket, SHUT_WR);
+    close(socket.socket);
 }
 
 #endif /* __linux__*/

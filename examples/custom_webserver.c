@@ -50,20 +50,20 @@ int main() {
         printf("user: %s\n", getHashValue(request.header, key).pItem);
         freeCWeb3HTTPRequest(request);
 
-        // making the response message 
+        // making the response message
         uint64_t len;
         char* File = readFile("index.html", &len);
-        
+
         // send response
         CWeb3HTTPData data;
         data.codeNum = 200; // 200 OK
-        data.conentType = contentHtml;
+        data.conentType = "text/html";
         data.version.major = 1; // Http 1.1
         data.version.minor = 1;
 
         void* response = CWeb3HttpRespond(client, File, len, data);// it can only be cleaned after socket it closed
         free(File);
-        
+
         // close client socket
         CWeb3CloseSocket(client);
         free(response);
