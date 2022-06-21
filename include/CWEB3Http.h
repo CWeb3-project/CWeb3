@@ -17,9 +17,9 @@ typedef struct  {
 
 enum CWeb3HTTPMethod {
     methodGET,
-    MethodPOST,
-    MethodDELETE,
-    MethodPUT
+    methodPOST,
+    methodDELETE,
+    methodPUT
 };
 
 typedef struct 
@@ -35,3 +35,4 @@ typedef struct
 void* CWeb3HttpRespond(CWeb3Socket clientSocket, char* body, size_t bodySize, CWeb3HTTPData httpData);
 CWeb3HTTPRequest CWeb3ParseRequest(char* str);
 void freeCWeb3HTTPRequest(CWeb3HTTPRequest request);
+char* getHTTPMethod(enum CWeb3HTTPMethod method);

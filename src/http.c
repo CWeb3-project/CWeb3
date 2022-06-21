@@ -41,9 +41,9 @@ enum CWeb3HTTPMethod _parseMethod(char* str, size_t* pPos) {
     *pPos = pos + *pPos;
 
     if (!strcmp(strMethod, "GET")) return methodGET;
-    else if (!strcmp(strMethod, "POST")) return MethodPOST;
-    else if (!strcmp(strMethod, "DELETE")) return MethodDELETE;
-    else if (!strcmp(strMethod, "PUT")) return MethodPUT;
+    else if (!strcmp(strMethod, "POST")) return methodPOST;
+    else if (!strcmp(strMethod, "DELETE")) return methodDELETE;
+    else if (!strcmp(strMethod, "PUT")) return methodPUT;
     else return -1;
 }
 
@@ -159,4 +159,21 @@ void freeCWeb3HTTPRequest(CWeb3HTTPRequest request) {
     freeHashtable(request.header);
     free(request.path);
     if (request.body != 0) free(request.body);
+}
+
+char* getHTTPMethod(enum CWeb3HTTPMethod method) {
+
+    #define RETURN_IF_METHOD(meth, ret) case meth: return ret;
+    switch (method)
+    {
+        RETURN_IF_METHOD(methodGET, "GET")
+        RETURN_IF_METHOD(methodPOST, "POST")
+        RETURN_IF_METHOD(methodPUT, "PUT")
+        RETURN_IF_METHOD(methodDELETE, "DELETE")
+
+        default:
+            printf("[CWeb3]: unknown method");
+            exit(0);
+    }
+    #undef RETURN_IF_METHOD
 }

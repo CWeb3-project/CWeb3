@@ -31,6 +31,8 @@ void CWeb3_server_start(CWeb3Server p_server) {
     signal(SIGINT, handle);
 
     if (!server.socket) printf("err on serv sock\n");
+
+    if (p_server.config.verbose) printf("[CWeb3]: server listening at http://%s:%d\n", p_server.config.host, p_server.config.port);
     while (1)
     {
         // wait till the client connects
@@ -42,6 +44,10 @@ void CWeb3_server_start(CWeb3Server p_server) {
         char* messageBuffer = CWeb3Recv(client, &messageSize);
         CWeb3HTTPRequest req = CWeb3ParseRequest(messageBuffer);
         free(messageBuffer);
+
+        if (p_server.config.verbose) {
+            printf("[CWeb3]: Request (%s): \"%s\"\n", req.path, getHTTPMethod(req.method));
+        }
 
         // Calling the function
         CWeb3Request request;
