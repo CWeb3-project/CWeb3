@@ -57,7 +57,7 @@ int main() {
         // send response
         CWeb3HTTPData data;
         data.codeNum = 200; // 200 OK
-        data.conentType = contentHtml;
+        data.conentType = "text/html";
         data.version.major = 1; // Http 1.1
         data.version.minor = 1;
 

@@ -1,6 +1,7 @@
+#pragma once
+
 #include "config.h"
 #include "routes.h"
-#pragma once
 
 typedef struct {
     CWeb3Routes routes;

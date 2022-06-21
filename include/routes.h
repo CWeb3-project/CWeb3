@@ -1,13 +1,13 @@
-
-#include "response.h"
 #include <stddef.h>
+#include "request.h"
+#include "response.h"
 
 #ifndef __CWEB3_ROUTES_H_
 #define __CWEB3_ROUTES_H_
 
 typedef struct {
     const char* route;
-    void (*callback)();
+    void (*callback)(CWeb3Request*, CWeb3Response*);
 
 } CWeb3Route;
 

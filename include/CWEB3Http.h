@@ -1,23 +1,17 @@
-#include "../include/soc.h"
-#include "../include/config.h"
-#include "../include/hashtable.h"
+#include "soc.h"
+#include "config.h"
+#include "hashtable.h"
+
+#pragma once
 
 struct CWeb3Version {
     int major;
     int minor;
 };
 
-enum CWeb3ConentType {
-    contenttext,
-    contentbytes,
-    contentJSON,
-    contentHtml,
-    contentNone
-};
-
 typedef struct  {
     struct CWeb3Version version;
-    enum CWeb3ConentType conentType;
+    const char* conentType;
     int codeNum;
 } CWeb3HTTPData;
 

@@ -4,15 +4,15 @@
 #include "../include/soc.h"
 #include <stdio.h>
 
-void index() {
-    printf("INDEX HAS BEEN CALLED!\n");
+void index(CWeb3Request* req, CWeb3Response* res) {
+    res->data = "hello!";
 }
 
 int main() {
 
     CWeb3Config config;
     config.host = "127.0.0.1";
-    config.port = 8019;
+    config.port = 8004;
     config.protocol = TCP;
     config.verbose = 1;
 
