@@ -22,6 +22,7 @@ char* CWeb3Recv(CWeb3Socket clientSocket, size_t* pBufferSize) {
     }
 
     size_t bufferSize = offset+messageSize;
+    if (bufferSize == 0) return 0;
     buffer = realloc(buffer, bufferSize+1);
     buffer[bufferSize] = '\0';
     bufferSize++;

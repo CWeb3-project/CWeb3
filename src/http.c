@@ -9,19 +9,17 @@ void* CWeb3HttpRespond(CWeb3Socket clientSocket, char* body, size_t bodySize, CW
     size_t len = bodyLen + 2048;
 
     char minorStr[12] = {0};
-    sprintf(minorStr, ".%i", httpData.version.minor);
-
-    char OK[] = "OK"; // todo: add all the other codes, int -> char* lookup
-    char contentStr[] = "text/html"; // todo: enum -> char* lookup
+    if (httpData.version.minor != 0)
+        sprintf(minorStr, ".%i", httpData.version.minor);
 
     char* response = malloc(len);
     memset(response, 0, len);
     sprintf(response,
-"HTTP/%i%s %i %s\r\n\
+"HTTP/%i%s %s\r\n\
 Content-Type:%s\r\n\
 Content-Lenght:%zu\r\n\r\n",
-    httpData.version.major, minorStr, httpData.codeNum, OK,
-    contentStr,
+    httpData.version.major, minorStr, httpData.code,
+    httpData.conentType,
     bodyLen
     );
     size_t headSize = strlen(response);
@@ -107,8 +105,13 @@ int8_t _parseIsHeaderEnd(char* str, size_t pos) {
 
 CWeb3HTTPRequest CWeb3ParseRequest(char* str) {
     CWeb3HTTPRequest parsedRequest = {0};
-    parsedRequest.header = newHashtable(512);
     size_t len = strlen(str);
+    if (len < 22) {
+        CWeb3HTTPRequest err = {0};
+        return err;
+    }
+    
+    parsedRequest.header = newHashtable(512);
     size_t pos = 0;
     parsedRequest.method = _parseMethod(str, &pos);
     pos++;
@@ -141,7 +144,7 @@ CWeb3HTTPRequest CWeb3ParseRequest(char* str) {
             }
         }
         pos++;
-        addHashValue(parsedRequest.header, pair);
+        hashtableAdd(parsedRequest.header, pair);
         freeHashPair(pair);
     }
 

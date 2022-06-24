@@ -5,6 +5,9 @@
 #include <string.h>
 #include <stdlib.h>
 
+#define flag printf("%s:%i\n", __FILE__, __LINE__);
+#define flag(x) printf("ID : %i, FILE : %s:%i\n", x, __FILE__, __LINE__);
+
 char* readFile(const char* path, uint64_t* pLength) {
 	FILE* file = fopen(path, "rb");
 	fseek(file, 0, SEEK_END);
@@ -19,12 +22,16 @@ char* readFile(const char* path, uint64_t* pLength) {
 	return buffer;
 }
 
-int main() {
+CWeb3Socket server;
+
+int main(int argc, char** argv) {
     CWeb3Config config;
     config.host = "127.0.0.1";
-    config.port = 10003;
+
+    config.port = atoi(argv[1]);
     config.protocol = TCP;
     config.verbose = 1;
+
 
     CWeb3Socket server = newCWeb3Socket(config);
     if (!server.socket) printf("err on serv sock");
@@ -35,10 +42,9 @@ int main() {
         if (!client.socket) printf("err on clin sock");
 
         // read the client message
-        size_t messageSize;
+        size_t messageSize;   
         char* messageBuffer = CWeb3Recv(client, &messageSize);
         CWeb3HTTPRequest request = CWeb3ParseRequest(messageBuffer);
-        free(messageBuffer);
 
         char user[] = "User-Agent";
         HashItem key;
@@ -47,7 +53,7 @@ int main() {
 
         // general debug
         printf("path: %s\n", request.path);
-        printf("user: %s\n", getHashValue(request.header, key).pItem);
+        printf("user: %s\n", hashtableGet(request.header, key).pItem);
         freeCWeb3HTTPRequest(request);
 
         // making the response message

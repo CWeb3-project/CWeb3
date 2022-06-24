@@ -4,6 +4,7 @@
 
 #pragma once
 
+
 struct CWeb3Version {
     int major;
     int minor;
@@ -13,6 +14,7 @@ typedef struct  {
     struct CWeb3Version version;
     const char* conentType;
     int codeNum;
+    char* code;
 } CWeb3HTTPData;
 
 enum CWeb3HTTPMethod {

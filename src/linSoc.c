@@ -42,6 +42,7 @@ CWeb3Socket CWeb3Listen(CWeb3Socket socket) {
         // error handling
     }
 
+
     struct sockaddr_in client = {0};
     int clientsize = sizeof(client);
     int clientSockI = accept(socket.socket, (struct sockaddr*)&client, (socklen_t *)&clientsize);

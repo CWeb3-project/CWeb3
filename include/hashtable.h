@@ -24,7 +24,7 @@ typedef struct {
 
 Hashtable newHashtable(size_t bucketLen);
 size_t genHash(HashItem key, size_t buckeLen);
-void addHashValue(Hashtable table, HashPair pair);
-HashItem getHashValue(Hashtable table, HashItem key);
+void hashtableAdd(Hashtable table, HashPair pair);
+HashItem hashtableGet(Hashtable table, HashItem key);
 void freeHashtable(Hashtable table);
 void freeHashPair(HashPair pair);
