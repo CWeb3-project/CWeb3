@@ -1,8 +1,11 @@
+
 #pragma once
 
-typedef struct {
+typedef struct
+{
+    int code;
     const char* content_type;
-} CWeb3Response;
 
-// TODO: make responses for HTML, JS, ...
+    char* data;
+} CWeb3Response;
 
