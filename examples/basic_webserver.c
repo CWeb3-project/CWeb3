@@ -1,5 +1,6 @@
 
 #include "../include/routes.h"
+#include "../include/hashtable.h"
 #include "../include/soc.h"
 #include <stdio.h>
 

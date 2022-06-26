@@ -19,7 +19,7 @@ int main() {
         fgets(b, 1024, stdin);
         p.value.size = strlen(b)+1;
         p.value.pItem = b;
-        addHashValue(table, p);
+        hashtableAdd(table, p);
 
     }
 
@@ -31,7 +31,7 @@ int main() {
         key.size = strlen(a)+1;
         key.pItem = a;
 
-        HashItem tableValue = getHashValue(table, key);
+        HashItem tableValue = hashtableGet(table, key);
         printf("< %s >\n", (char *)tableValue.pItem);
     }
     
