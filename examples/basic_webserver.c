@@ -1,23 +1,26 @@
 
 #include "../include/routes.h"
-#include "../include/hashtable.h"
+#include "../include/server.h"
 #include "../include/soc.h"
 #include <stdio.h>
 
-void index() {
-
+void index(CWeb3Request* req, CWeb3Response* res) {
+    res->data = "hello!";
 }
 
 int main() {
 
     CWeb3Config config;
     config.host = "127.0.0.1";
-    config.port = 10003;
+    config.port = 8006;
     config.protocol = TCP;
     config.verbose = 1;
 
-    CWeb3Routes* routes = CWeb3_new_routes();
-    CWeb3_add_route(routes, "/", index);
+    CWeb3Routes routes = CWeb3_new_routes();
+    CWeb3_add_route(&routes, "/", index);
 
-    
+    CWeb3Server server = CWeb3_create_server(config);
+    CWeb3_server_merge_routes(&server, routes);
+
+    CWeb3_server_start(server);
 }
