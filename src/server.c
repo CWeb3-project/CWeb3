@@ -74,7 +74,7 @@ void CWeb3_server_start(CWeb3Server p_server) {
 
         // send response
         CWeb3HTTPData data;
-        data.codeNum = 200; // 200 OK
+        data.code = "200 OK"; // 200 OK
         data.version.major = 1; // Http 1.1
         data.version.minor = 1;
         data.conentType = response.content_type;
