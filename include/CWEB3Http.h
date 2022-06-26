@@ -13,7 +13,6 @@ struct CWeb3Version {
 typedef struct  {
     struct CWeb3Version version;
     const char* conentType;
-    int codeNum;
     char* code;
 } CWeb3HTTPData;
 
